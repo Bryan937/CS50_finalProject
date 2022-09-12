@@ -1,5 +1,7 @@
 # LGA_WebApp
 
+Made by: Bryan T.
+
 Video Demo: https://youtu.be/p-_xZnylFDU
 
 Description:
