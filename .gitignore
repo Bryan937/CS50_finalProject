@@ -1,6 +1,5 @@
 # Fichier à ignorer
-.idea/
-.vs/
-__pycache__/
-website/.vs/
-website/__pycache__/
+.idea
+**/.vs
+**/__pycache__
+
