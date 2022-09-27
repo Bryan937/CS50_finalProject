@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block sidenav %}
+<div class="sidnav-container">
+    <nav class="sidenav">
+        <ul class="sidnav-list">
+            {% if current_user.is_authenticated %}
+            <li class="profile-img-container">
+                <figure>
+                    <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic ) }}" alt="Profile pic" />
+                    <figcaption>{{ current_user.username }}</figcaption>
+                    <figcaption>{{ current_user.grade }}</figcaption>
+                </figure>
+            </li>
+            {% endif %}
+            <li class="searchForm-container">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend> Worksheets filter</legend>
+                        <div class="form-group col-md-4">
+                            {{ form.grade.label(class="custom-select-label text-center") }}
+
+                            {% if form.grade.errors %}
+                            {{ form.grade(class="custom-select is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.grade.errors %}
+                                <div class="pb-3">
+                                    <span>{{error}}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="pb-3">
+                                {{ form.grade(class="custom-select") }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ form.subject.label(class="custom-select-label") }}
+
+                            {% if form.subject.errors %}
+                            {{ form.subject(class="custom-select is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.subject.errors %}
+                                <div class="pb-3">
+                                    <span>{{error}}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="pb-3">
+                                {{ form.subject(class="custom-select") }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-info btn-sm ml-2") }}
+                    </div>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock sidenav %}
+
+{% block content %}
+<div class="worksheets-list-container">
+    <h1 class="page-header">My Feed</h1>
+    <h2 class="page-sub-header">Worksheets recommendation based off your grade</h2>
+
+    {% for post in posts.items %}
+    <article class="post-list-layout">
+        <a class="post-list-title" href="{{url_for('post', post_id=post.id)}}">{{post.title}}</a>
+        <span class="post-list-date">{{post.date_posted.strftime('%Y-%m-%d')}}</span><br />
+        <div class="profile-pic-format">
+            <figure>
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.profile_pic) }}" alt="Profile pic" />
+                <figcaption><a href="{{url_for('user_profile', username=post.author.username)}}">{{post.author.username}}</a></figcaption>
+            </figure>
+        </div>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.grade)}}">{{post.grade}}</a></span>
+        <span>/</span>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.subject)}}">{{post.subject}}</a></span>
+        <article class="post-list-content">
+            <h3 class="question-header">Question</h3>
+            <p>{{post.question}} ...</p>
+        </article>
+    </article>
+    {% endfor %}
+
+    {% for post in posts1.items %}
+    <article class="post-list-layout">
+        <a class="post-list-title" href="{{url_for('post', post_id=post.id)}}">{{post.title}}</a>
+        <span class="post-list-date">{{post.date_posted.strftime('%Y-%m-%d')}}</span><br />
+        <div class="profile-pic-format">
+            <figure>
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.profile_pic) }}" alt="Profile pic" />
+                <figcaption><a href="{{url_for('user_profile', username=post.author.username)}}">{{post.author.username}}</a></figcaption>
+            </figure>
+        </div>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.grade)}}">{{post.grade}}</a></span>
+        <span>/</span>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.subject)}}">{{post.subject}}</a></span>
+        <article class="post-list-content">
+            <h3 class="question-header">Question</h3>
+            <p>{{post.question}} ...</p>
+        </article>
+    </article>
+    {% endfor %}
+
+    {% for post in posts2.items %}
+    <article class="post-list-layout">
+        <a class="post-list-title" href="{{url_for('post', post_id=post.id)}}">{{post.title}}</a>
+        <span class="post-list-date">{{post.date_posted.strftime('%Y-%m-%d')}}</span><br />
+        <div class="profile-pic-format">
+            <figure>
+                <img src="{{ url_for('static', filename='profile_pics/' + post.author.profile_pic) }}" alt="Profile pic" />
+                <figcaption><a href="{{url_for('user_profile', username=post.author.username)}}">{{post.author.username}}</a></figcaption>
+            </figure>
+        </div>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.grade)}}">{{post.grade}}</a></span>
+        <span>/</span>
+        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.subject)}}">{{post.subject}}</a></span>
+        <article class="post-list-content">
+            <h3 class="question-header">Question</h3>
+            <p>{{post.question}} ...</p>
+        </article>
+    </article>
+    {% endfor %}
+
+    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+    {% if page_num %}
+    {% if posts.page == page_num %}
+    <a class="btn btn-info mb-4" href="{{url_for('feed', page=page_num)}}">{{page_num}}</a>
+    {% else %}
+    <a class="btn btn-outline-info mb-4" href="{{url_for('feed', page=page_num)}}">{{page_num}}</a>
+    {% endif %}
+    {% else %}
+    ...
+    {% endif %}
+    {% endfor %}
+</div>
+{% endblock content %}

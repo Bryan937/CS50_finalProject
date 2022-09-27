@@ -1,0 +1,200 @@
+{% extends "layout.html" %}
+
+{% block style %}
+    <!-- CSS style for profile page from others (Bootstrap & Kshiti Ghelani)  -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link href="{{ url_for('static', filename='profile.css') }}" rel="stylesheet" type="text/css">
+{% endblock style %}
+
+{% block title %}
+    {{title}} profile
+{% endblock title %}
+
+{% block content %}
+    <!-- HTML profile page snippet made by Kshiti Ghelani (kshiti06 on Bootsnipp) -->
+    <div class="container emp-profile">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <figure>
+                        <img src="{{ profile_pic }}" id="profile_pic" alt="Profile pic" />
+                        <figcaption>Profile picture</figcaption>
+                    </figure>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+
+                <div class="profile-head">
+                    <h5>
+                        {{ current_user.username }}
+                    </h5>
+                    <h6>
+                        {{ current_user.email }}
+                    </h6>
+
+                    <p class="profile-grade">GRADE : <span>{{ current_user.grade }}</span></p>
+                    <div class="tab">
+                        <button type="button" class="tablinks" onclick="openTab(event, 'Myposts')">My Worksheets ({{posts.total}})</button>
+                        <button type="button" class="tablinks" onclick="openTab(event, 'liked-posts')" disabled>Worksheets liked</button>
+                        <button type="button" class="tablinks" onclick="openTab(event, 'peers')" disabled>Peers</button>
+                        <button type="button" class="tablinks" onclick="openTab(event, 'about')">About</button>
+                        <button type="button" class="tablinks" onclick="openTab(event, 'profile')">Update profile</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work">
+                </div>
+            </div>
+
+            <div class="col-md-8">
+
+                <div id="Myposts" class="tabcontent">
+                    <h1 class="page-header-profile">My Worksheets</h1>
+                    <h2 class="page-sub-header-profile">All {{posts.total}} worksheets created by me!</h2>
+
+                    {% for post in posts.items %}
+                    <article class="post-list-layout-profile">
+                        <a class="post-list-title" href="{{url_for('post', post_id=post.id)}}">{{post.title}}</a>
+                        <span class="post-list-date">{{post.date_posted.strftime('%Y-%m-%d')}}</span><br />
+                        <div class="profile-pic-format">
+                            <figure>
+                                <img src="{{ url_for('static', filename='profile_pics/' + post.author.profile_pic) }}" alt="Profile pic" />
+                                <figcaption><a href="{{url_for('user_profile', username=post.author.username)}}">{{post.author.username}}</a></figcaption>
+                            </figure>
+                        </div>
+                        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.grade)}}">{{post.grade}}</a></span>
+                        <span> / </span>
+                        <span><a class="post-list-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.subject)}}">{{post.subject}}</a></span>
+                        <article class="post-list-content">
+                            <h3 class="question-header">Question</h3>
+                            <p>{{post.question}}</p>
+                        </article>
+                    </article>
+                    {% endfor %}
+                    {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                    {% if posts.page == page_num %}
+                    <a class="btn btn-info mb-4" href="{{url_for('profile', page=page_num)}}">{{page_num}}</a>
+                    {% else %}
+                    <a class="btn btn-outline-info mb-4" href="{{url_for('profile', page=page_num)}}">{{page_num}}</a>
+                    {% endif %}
+                    {% else %}
+                    ...
+                    {% endif %}
+                    {% endfor %}
+                </div>
+
+                <div id="liked-posts" class="tabcontent">
+                    <h3>Your liked Worksheets</h3>
+                    <p>Worksheets you liked!</p>
+                </div>
+
+                <div id="peers" class="tabcontent">
+                    <h3>Peers</h3>
+                    <p>Look at your peers!</p>
+                </div>
+
+                <div id="about" class="tabcontent">
+                    <h3>About</h3>
+                    <p>Username: <span>{{ current_user.username }}</span></p>
+                    <p>Email: <span>{{ current_user.email }}</span></p>
+                    <p>Grade: <span>{{ current_user.grade }}</span></p>
+                </div>
+
+                <div id="profile" class="tabcontent">
+                    
+                    <form action="" method="post" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <fieldset class="form-group">
+
+                            <legend>Update Profile</legend>
+
+                            <div class="form-group">
+                                {{ form.username.label(class="form-control-label") }}
+
+                                {% if form.username.errors %}
+                                {{ form.username(class="form-control form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.username.errors %}
+                                    <span>{{error}}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.username(class="form-control form-control") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group ml-n3 col-md-4 ">
+                                {{ form.grade.label(class="form-control-label") }}
+
+                                {% if form.grade.errors %}
+                                {{ form.grade(class="form-control form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.grade.errors %}
+                                    <span>{{error}}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                    {{ form.grade(class="custom-select") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.email.label(class="form-control-label") }}
+
+                                {% if form.email.errors %}
+                                {{ form.email(class="form-control form-control is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                    <span>{{error}}</span>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                {{ form.email(class="form-control form-control") }}
+                                {% endif %}
+                            </div>
+
+                            <div class="form-group">
+                                {{ form.picture.label() }}
+                                {{ form.picture(class="form-control-file") }}
+                                {% if form.picture.errors %}
+                                {% for error in form.picture.errors %}
+                                <span class="text-danger">{{error}}</span><br />
+                                {% endfor %}
+                                {% endif %}
+                            </div>
+
+                        </fieldset>
+                        
+                        <div class="form-group">
+                            {{ form.submit(class="btn btn-outline-success") }}
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+{% endblock content %}

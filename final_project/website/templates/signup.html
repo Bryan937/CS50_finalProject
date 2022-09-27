@@ -1,0 +1,107 @@
+{% extends "layout(login).html" %}
+
+{% block title %}
+    Sign Up
+{% endblock %}
+
+{% block main %}
+<div class="form-container-signup">
+    <div class="logo">
+        <p style="text-align: center"><a href="{{ url_for('index') }}"><img src="static/images/logo.png" alt="LGA logo"></a></p>
+    </div>
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend>Create an Account</legend>
+            <div class="form-group">
+                <div class="border-top pt-3">
+                    {{ form.username.label(class="form-control-label") }}
+                </div>
+                {% if form.username.errors %}
+                {{ form.username(class="form-control form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.username.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="pb-3">
+                    {{ form.username(class="form-control form-control") }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group col-md-4">
+
+                <label> Grade </label>
+
+                {% if form.grade.errors %}
+                {{ form.grade(class="custom-select is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.grade.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="pb-3">
+                    {{ form.grade(class="custom-select") }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.email.label(class="form-control-label") }}
+
+                {% if form.email.errors %}
+                {{ form.email(class="form-control form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.email.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="pb-3">
+                    {{ form.email(class="form-control form-control") }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.password.label(class="form-control-label") }}
+
+                {% if form.password.errors %}
+                {{ form.password(class="form-control form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.password.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="pb-3">
+                    {{ form.password(class="form-control form-control") }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                {{ form.confirm.label(class="form-control-label") }}
+
+                {% if form.confirm.errors %}
+                {{ form.confirm(class="form-control form-control is-invalid") }}
+                <div class="invalid-feedback">
+                    {% for error in form.confirm.errors %}
+                    <span>{{error}}</span>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="pb-3">
+                    {{ form.confirm(class="form-control form-control") }}
+                </div>
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-outline-success") }}
+        </div>
+        <small style="text-align:right">
+            <p>Already a student? <a class="ml-2" href="{{ url_for('login') }}">Log In</a></p>
+        </small>
+    </form>
+</div>
+{% endblock %}

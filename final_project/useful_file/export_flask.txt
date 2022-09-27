@@ -1,0 +1,9 @@
+Windows Comd Prompt
+set FLASK_APP=website.py
+set FLASK_ENV=development
+set FLASK_DEBUG=1
+
+Windows PowerShell
+$env:FLASK_APP = "website.py"
+$env:FLASK_ENV = "development"
+$env:FLASK_DEBUG = "1"

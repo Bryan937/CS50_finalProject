@@ -1,0 +1,133 @@
+{% extends "layout.html" %}
+
+{% block title %} {{title}} {% endblock %}
+
+{% block sidenav %}
+<div class="sidnav-container">
+    <nav class="sidenav">
+        <ul class="sidnav-list">
+            {% if current_user.is_authenticated %}
+            <li class="profile-img-container">
+                <figure>
+                    <img src="{{ url_for('static', filename='profile_pics/' + current_user.profile_pic ) }}" alt="Profile pic" />
+                    <figcaption>{{ current_user.username }}</figcaption>
+                    <figcaption>{{ current_user.grade }}</figcaption>
+                </figure>
+            </li>
+            {% endif %}
+            <li class="searchForm-container">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <legend> Worksheets filter</legend>
+                        <div class="form-group col-md-4">
+                            {{ form.grade.label(class="custom-select-label text-center") }}
+
+                            {% if form.grade.errors %}
+                            {{ form.grade(class="custom-select is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.grade.errors %}
+                                <div class="pb-3">
+                                    <span>{{error}}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="pb-3">
+                                {{ form.grade(class="custom-select") }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="form-group col-md-4">
+                            {{ form.subject.label(class="custom-select-label") }}
+
+                            {% if form.subject.errors %}
+                            {{ form.subject(class="custom-select is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.subject.errors %}
+                                <div class="pb-3">
+                                    <span>{{error}}</span>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <div class="pb-3">
+                                {{ form.subject(class="custom-select") }}
+                            </div>
+                            {% endif %}
+                        </div>
+                    </fieldset>
+                    <div class="form-group">
+                        {{ form.submit(class="btn btn-info btn-sm ml-2") }}
+                    </div>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</div>
+{% endblock sidenav %}
+
+{% block content %}
+<div class="worksheets-container">
+    <article class="post-layout">
+        <h2 class="post-title">{{post.title}}</h2>
+        <span><img class="post-img" src="{{ url_for('static', filename='profile_pics/' + post.author.profile_pic) }}" /></span>
+        <span class="post-username"><a href="{{url_for('user_profile', username=post.author.username)}}">{{post.author.username}}</a></span>
+        <span class="post-date">{{post.date_posted.strftime('%Y-%m-%d')}}</span><br />
+        <small class="grade-subject-header">Worksheet Grade/Subject</small><br />
+
+        {% if post.author == current_user %}
+        <div class="post-option">
+            <a class="btn btn-secondary btn-sm m-1" href="{{url_for('update_post', post_id=post.id)}}">Update</a>
+
+            <!--Delete button triger modal-->
+            <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Delete Worksheet?</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        You are about to delete this worksheet. Are you sure you want to proceed?
+                        (Caution: You will not be able to recover this worksheet afterwards!)
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <form action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+                            <input class="btn btn-danger" type="submit" value="Delete" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <span><a class="post-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.grade)}}">{{post.grade}}</a></span>
+        <span> / </span>
+        <span><a class="post-subject-grade" href="{{url_for('worksheets_parameter', parameter=post.subject)}}">{{post.subject}}</a></span>
+        <article class="post-content">
+            <table class="post-table">
+                <tr>
+                    <th class="post-question">
+                        <h3>Question</h3>
+                        <p>{{post.question}}</p>
+                    </th>
+                </tr>
+                <tr>
+                    <th class="post-answer">
+                        <h3>Answer</h3>
+                        <p>{{post.answer}}</p>
+                    </th>
+                </tr>
+            </table>
+        </article>
+    </article>
+</div>
+{% endblock content %}

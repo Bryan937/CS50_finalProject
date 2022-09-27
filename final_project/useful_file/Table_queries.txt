@@ -1,0 +1,44 @@
+-- Subject queries -- 
+
+math = Subject(name='Mathematics', description='Science of numbers and their operations, interrelations, combinations, generalization, and abstractions and of space configurations and their structure, measurement, transformations, and generalizations.')
+phy = Subject(name='Physics', description='Science that deals with matter and energy and their interactions.')
+chi = Subject(name='Chemistry', description='Science that deals with the composition, structure, and properties of substances and with the transformations that they undergo.')
+bio = Subject(name='Biology', description='Branch of knowledge that deals with living organisms and vital processes.')
+his = Subject(name='History', description='Branch of knowledge that records and explains past events.')
+geo = Subject(name='Geography', description='The study of the earth and its features and of the distribution of life on the earth, including human life and the effects of human activity.')
+
+
+db.session.add(phy)
+db.session.add(math)
+db.session.add(chi)
+db.session.add(bio)
+db.session.add(his)
+db.session.add(geo)
+
+ -- Grade queries --
+
+grade_1 = Grade(name='Grade 1', description='CP(France system) Year 2(UK system)', rank='1')
+grade_2 = Grade(name='Grade 2', description='CE1(France system) Year 3(UK system)', rank='2')
+grade_3 = Grade(name='Grade 3', description='CE2(France system) Year 4(UK system)', rank='3')
+grade_4 = Grade(name='Grade 4', description='CM1(France system) Year 5(UK system)', rank='4')
+grade_5 = Grade(name='Grade 5', description='CM2(France system) Year 6(UK system)', rank='5')
+grade_6 = Grade(name='Grade 6', description='La sixième(France system) Year 7(UK system)', rank='6')
+grade_7 = Grade(name='Grade 7', description='La cinquième(France system) Year 8(UK system)', rank='7')
+grade_8 = Grade(name='Grade 8', description='La quatrième(France system) Year 9(UK system)', rank='8')
+grade_9 = Grade(name='Grade 9', description='La troisième(France system) Year 10(UK system)', rank='9')
+grade_10 = Grade(name='Grade 10', description='La deuxième(France system) Year 11(UK system)', rank='10')
+grade_11 = Grade(name='Grade 11', description='La première(France system) Year 12(UK system)', rank='11')
+grade_12 = Grade(name='Grade 12', description='La terminale(France system) Year 13(UK system)', rank='12')
+
+db.session.add(grade_1)
+db.session.add(grade_2)
+db.session.add(grade_3)
+db.session.add(grade_4)
+db.session.add(grade_5)
+db.session.add(grade_6)
+db.session.add(grade_7)
+db.session.add(grade_8)
+db.session.add(grade_9)
+db.session.add(grade_10)
+db.session.add(grade_11)
+db.session.add(grade_12)

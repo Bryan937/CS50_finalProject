@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block description %}
+<meta name="description" content="LGA is a website providing free worksheets
+    provided by a community of students around the world from different
+    faculties that shares their knowledge to improve learning accros the globe">
+{% endblock description %}
+
+{% block title %} {{title}} {% endblock title %}
+
+{% block content %}
+
+<div class="background_banner">
+    <img class="logo_slogan" src="../static/images/logo_slogan.png" alt="Logo+slogan">
+    <h1 class="text_banner">Join a big community of students around the world!</h1>
+    <h2 class="text_banner">Join LGA to learn, grow and accomplish big things!</h2>
+    <div class="signup">
+        <p style="text-align:center"><a class="signup_button" href="{{ url_for('signup') }}">Sign Up</a></p>
+    </div>
+</div>
+<div class="banners">
+    <table id="index-banner">
+        <tr>
+            <th class="exercise-banner-cell">
+                <div class="exercise-banner">
+                    <h2>Want to start working out your brain!</h2>
+                    <h4><a href="{{ url_for('worksheets') }}">Worksheets</a></h4>
+                    <h4><a href="#">Subjects</a></h4>
+                    <h4><a href="#">Grades</a></h4>
+                </div>
+            </th>
+            <th class="about-banner-cell">
+                <div class="about-us-banner">
+                    <h2>Get to know Us!</h2>
+                    <h4><a href="#">About Us</a></h4>
+                    <h4><a href="#">FAQ</a></h4>
+                </div>
+            </th>
+        </tr>
+    </table>
+</div>
+{% endblock content %}
+
+{% block footer %}
+    <footer>
+        <p class="stand_footer">Copyrights 2020 LGA Network</p>
+    </footer>
+{% endblock footer %}
